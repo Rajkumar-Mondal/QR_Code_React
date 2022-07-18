@@ -27,15 +27,12 @@ function App() {
     console.log(error);
   }
   const handleScanFile = (result) => {
-    alert(result);
     if (result) {
-      alert(result);
       setScanResultFile(result);
     }
   }
   const onScanFile = () => {
     qrRef.current.openImageDialog();
-    // qrRef.current?.openImageDialog();
   }
   const handleErrorWebCam = (error) => {
     console.log(error);
@@ -67,12 +64,13 @@ function App() {
       <div className='container2'>
         <button onClick={() => onScanFile()}>Scan Qr Code</button>
         <QrReader
+          key={scanResultFile}
           ref={qrRef}
-          delay={300}
-          style={{ width: '100%' }}
+          delay={100}
+          // style={{ width: '100%' }}
           onError={handleErrorFile}
           onScan={handleScanFile}
-          legacyMode
+          legacyMode={true}
         />
         <h3>Scanned Code: {scanResultFile}</h3>
       </div>
