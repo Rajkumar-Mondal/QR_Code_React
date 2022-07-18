@@ -7,7 +7,8 @@ function App() {
   const [text, setText] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [scanResultFile, setScanResultFile] = useState('');
-  // const [scanResultWebCam, setScanResultWebCam] = useState('');
+  const [startScan, setStartScan] = useState(false);
+  const [scanResultWebCam, setScanResultWebCam] = useState('');
   const qrRef = useRef(null);
 
 
@@ -16,6 +17,7 @@ function App() {
   const generateQrCode = async () => {
     try {
       const response = await QRCode.toDataURL(text);
+      console.log(response);
       setImageUrl(response);
     } catch (error) {
       console.log(error);
@@ -25,21 +27,24 @@ function App() {
     console.log(error);
   }
   const handleScanFile = (result) => {
+    alert(result);
     if (result) {
+      alert(result);
       setScanResultFile(result);
     }
   }
   const onScanFile = () => {
     qrRef.current.openImageDialog();
+    // qrRef.current?.openImageDialog();
   }
-  // const handleErrorWebCam = (error) => {
-  //   console.log(error);
-  // }
-  // const handleScanWebCam = (result) => {
-  //   if (result) {
-  //     setScanResultWebCam(result);
-  //   }
-  // }
+  const handleErrorWebCam = (error) => {
+    console.log(error);
+  }
+  const handleScanWebCam = (result) => {
+    if (result) {
+      setScanResultWebCam(result);
+    }
+  }
 
 
 
@@ -71,7 +76,26 @@ function App() {
         />
         <h3>Scanned Code: {scanResultFile}</h3>
       </div>
-
+      <div className='container3'>
+        <button
+          onClick={() => {
+            setStartScan(!startScan);
+          }}
+        >
+          {startScan ? "Stop Scan" : "Start Scan"}
+        </button>
+        {startScan && (
+          <>
+            <QrReader
+              delay={100}
+              style={{ width: '100%' }}
+              onError={handleErrorWebCam}
+              onScan={handleScanWebCam}
+            />
+            <h3>Scanned by Camera: {scanResultWebCam}</h3>
+          </>
+        )}
+      </div>
     </div>
   );
 }
